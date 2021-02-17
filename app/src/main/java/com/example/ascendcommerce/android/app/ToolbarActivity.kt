@@ -1,9 +1,10 @@
-package com.example.ascendcommerce
+package com.example.ascendcommerce.android.app
 
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.ascendcommerce.R
 
 abstract class ToolbarActivity : AppCompatActivity() {
     private var customTitleTextView: TextView? = null

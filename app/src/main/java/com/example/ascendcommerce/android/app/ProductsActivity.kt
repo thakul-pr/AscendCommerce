@@ -1,6 +1,7 @@
-package com.example.ascendcommerce
+package com.example.ascendcommerce.android.app
 
 import android.os.Bundle
+import com.example.ascendcommerce.R
 
 class ProductsActivity : ToolbarActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

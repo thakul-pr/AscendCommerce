@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AscendCommerce">
         <activity
-            android:name=".ProductsActivity"
+            android:name=".android.app.ProductsActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name=".android.app.DetailActivity"
             android:screenOrientation="portrait" />
     </application>
 
