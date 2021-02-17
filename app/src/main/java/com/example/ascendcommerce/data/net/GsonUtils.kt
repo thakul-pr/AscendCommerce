@@ -1,4 +1,4 @@
-package com.example.ascendcommerce.data.net.body
+package com.example.ascendcommerce.data.net
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

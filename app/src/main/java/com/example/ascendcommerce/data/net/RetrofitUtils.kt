@@ -1,6 +1,5 @@
 package com.example.ascendcommerce.data.net
 
-import com.example.ascendcommerce.data.net.body.GsonUtils
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,9 +16,8 @@ object RetrofitUtils {
 
         val gson = GsonUtils.build()
 
-        // FIXME
         return Retrofit.Builder()
-            .baseUrl("https://localhost")
+            .baseUrl("https://ecommerce-product-app.herokuapp.com/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
