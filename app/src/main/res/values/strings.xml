@@ -4,4 +4,5 @@
     <string name="products">Products</string>
     <string name="detail">Detail</string>
     <string name="start_picking_your_treats">Start picking your treats</string>
+    <string name="newProduct">New</string>
 </resources>
