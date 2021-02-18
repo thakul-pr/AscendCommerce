@@ -49,6 +49,16 @@ class ProductsActivity : ToolbarActivity() {
         viewModel?.getProducts()
         viewModel?.liveData?.observe(this, object : ServiceCallObserver<List<Product>>() {
             override fun postIsLoading(value: Boolean) {
+                if (value) {
+                    if ((productsAdapter?.itemCount ?: 0) == 0) {
+                        setContentShown(false)
+                    } else {
+                        findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)?.isRefreshing = true
+                    }
+                } else {
+                    setContentShown(true)
+                    findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)?.isRefreshing = false
+                }
             }
 
             override fun postValue(value: List<Product>?) {
@@ -62,6 +72,12 @@ class ProductsActivity : ToolbarActivity() {
             }
 
         })
+    }
+
+    private fun setContentShown(shown: Boolean) {
+        findViewById<View>(R.id.recyclerView)?.visibility = if (shown) View.VISIBLE else View.GONE
+        // TODO
+//        progressContainer?.visibility = if (shown) View.GONE else View.VISIBLE
     }
 
     inner class ProductItemDecoration(context: Context) :
@@ -126,6 +142,15 @@ class ProductsActivity : ToolbarActivity() {
         val price: TextView = itemView.findViewById(R.id.price)
 
         fun bindView(product: Product) {
+            itemView.setOnClickListener {
+                it.context.startActivity(
+                    DetailActivity.getIntent(
+                        it.context,
+                        product
+                    )
+                )
+            }
+
             product.image?.also {
                 GlideUtils.loadImage(
                     context,
