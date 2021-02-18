@@ -4,18 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.example.ascendcommerce.R
 import com.example.ascendcommerce.data.model.Product
+import com.example.ascendcommerce.databinding.ActivityDetailBinding
 import com.example.ascendcommerce.image.GlideUtils
 
 class DetailActivity : ToolbarActivity() {
 
+    private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
         setTitle(R.string.detail)
 
         findViewById<View>(R.id.back)?.apply {
@@ -27,21 +29,17 @@ class DetailActivity : ToolbarActivity() {
 
         intent?.getParcelableExtra<Product>(EXTRA_PRODUCT)?.also { product ->
             product.image?.also {
-                findViewById<ImageView>(R.id.productImage)?.also { productImage ->
-                    GlideUtils.loadImage(this, it, productImage)
-                }
+                GlideUtils.loadImage(this, it, binding.productImage)
             }
 
             if (product.isNewProduct) {
-                findViewById<View>(R.id.newProduct)?.visibility = View.VISIBLE
+                binding.newProduct.visibility = View.VISIBLE
             }
 
-            findViewById<TextView>(R.id.productName)?.text = product.title
-            findViewById<TextView>(R.id.price)?.text = product.price?.toString()
-            findViewById<TextView>(R.id.productContent)?.apply {
-                text = product.content
-                visibility = View.VISIBLE
-            }
+            binding.productName.text = product.title
+            binding.price.text = product.price?.toString()
+            binding.productContent.text = product.content
+            binding.productContent.visibility = View.VISIBLE
         }
     }
 

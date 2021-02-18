@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ascendcommerce.R
 import com.example.ascendcommerce.android.app.lifecycle.ServiceCallObserver
 import com.example.ascendcommerce.data.model.Product
+import com.example.ascendcommerce.databinding.ActivityProductsBinding
 import com.example.ascendcommerce.image.GlideUtils
 
 class ProductsActivity : ToolbarActivity() {
@@ -25,26 +25,25 @@ class ProductsActivity : ToolbarActivity() {
     private var productsAdapter: ProductsAdapter? = null
     private var viewModel: ProductsViewModel? = null
 
+    private lateinit var binding: ActivityProductsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_products)
+        binding = ActivityProductsBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
         setTitle(R.string.products)
 
         viewModel = ViewModelProvider(this).get(ProductsViewModel::class.java)
         productsAdapter = ProductsAdapter()
 
-        findViewById<RecyclerView>(R.id.recyclerView)?.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
-            layoutManager = GridLayoutManager(this@ProductsActivity, 2)
-            addItemDecoration(ProductItemDecoration(this@ProductsActivity))
-            adapter = productsAdapter
-        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        binding.recyclerView.layoutManager = GridLayoutManager(this@ProductsActivity, 2)
+        binding.recyclerView.addItemDecoration(ProductItemDecoration(this@ProductsActivity))
+        binding.recyclerView.adapter = productsAdapter
 
-        findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)?.apply {
-            setOnRefreshListener {
-                viewModel?.getProducts()
-            }
-        }
+
+        binding.swipeRefresh.setOnRefreshListener { viewModel?.getProducts() }
 
         setContentShown(false)
         viewModel?.getProducts()
@@ -55,11 +54,11 @@ class ProductsActivity : ToolbarActivity() {
                     if ((productsAdapter?.itemCount ?: 0) == 0) {
                         setContentShown(false)
                     } else {
-                        findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)?.isRefreshing = true
+                        binding.swipeRefresh.isRefreshing = true
                     }
                 } else {
                     setContentShown(true)
-                    findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)?.isRefreshing = false
+                    binding.swipeRefresh.isRefreshing = false
                 }
             }
 
@@ -77,9 +76,8 @@ class ProductsActivity : ToolbarActivity() {
     }
 
     private fun setContentShown(shown: Boolean) {
-        findViewById<View>(R.id.recyclerView)?.visibility = if (shown) View.VISIBLE else View.GONE
-        findViewById<View>(R.id.progressContainer)?.visibility =
-            if (shown) View.GONE else View.VISIBLE
+        binding.recyclerView.visibility = if (shown) View.VISIBLE else View.GONE
+        binding.progressContainer.visibility = if (shown) View.GONE else View.VISIBLE
     }
 
     inner class ProductItemDecoration(context: Context) :
