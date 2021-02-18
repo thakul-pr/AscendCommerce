@@ -2,14 +2,14 @@ package com.example.ascendcommerce.data.net
 
 import com.example.ascendcommerce.data.model.Product
 import retrofit2.Call
-import retrofit2.http.POST
+import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ProductAPI {
 
-    @POST("products")
-    fun getProducts(): Call<ArrayList<Product>>
+    @GET("products")
+    fun getProducts(): Call<List<Product>>
 
-    @POST("products/{productId}")
+    @GET("products/{productId}")
     fun getProductDetail(@Path("productId") productId: Long): Call<Product>
 }

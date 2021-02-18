@@ -1,6 +1,7 @@
 package com.example.ascendcommerce.android.app
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,7 @@ class ProductsActivity : ToolbarActivity() {
         findViewById<RecyclerView>(R.id.recyclerView)?.apply {
             layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
             layoutManager = GridLayoutManager(this@ProductsActivity, 2)
+            addItemDecoration(ProductItemDecoration(this@ProductsActivity))
             adapter = productsAdapter
         }
 
@@ -44,11 +47,11 @@ class ProductsActivity : ToolbarActivity() {
         }
 
         viewModel?.getProducts()
-        viewModel?.liveData?.observe(this, object : ServiceCallObserver<ArrayList<Product>>() {
+        viewModel?.liveData?.observe(this, object : ServiceCallObserver<List<Product>>() {
             override fun postIsLoading(value: Boolean) {
             }
 
-            override fun postValue(value: ArrayList<Product>?) {
+            override fun postValue(value: List<Product>?) {
                 value?.also {
                     productsAdapter?.setData(value)
                 }
@@ -60,6 +63,29 @@ class ProductsActivity : ToolbarActivity() {
 
         })
     }
+
+    inner class ProductItemDecoration(context: Context) :
+        RecyclerView.ItemDecoration() {
+
+        private val padding =
+            context.resources.getDimensionPixelSize(R.dimen.space_half)
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+
+            outRect.bottom = padding
+            outRect.top = padding
+            outRect.right = padding
+            outRect.left = padding
+        }
+    }
+
+    /////////// ADAPTER ////////////////
 
     private class ProductsAdapter : RecyclerView.Adapter<ProductsHolder>() {
         private var data = listOf<Product>()
@@ -82,25 +108,44 @@ class ProductsActivity : ToolbarActivity() {
             holder.bindView(item)
         }
 
-        fun setData(data: ArrayList<Product>) {
-            this.data = data
+        fun setData(data: List<Product>) {
+            val validProducts = data.filter {
+                it.isValidProduct()
+            }
+            this.data = validProducts
             notifyDataSetChanged()
         }
-
     }
 
     private class ProductsHolder(val context: Context, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         val productImage: ImageView = itemView.findViewById(R.id.productImage)
+        val newProduct: View = itemView.findViewById(R.id.newProduct)
         val productName: TextView = itemView.findViewById(R.id.productName)
         val price: TextView = itemView.findViewById(R.id.price)
 
         fun bindView(product: Product) {
             product.image?.also {
-                GlideUtils.loadImage(context, it, productImage)
+                GlideUtils.loadImage(
+                    context,
+                    it,
+                    productImage,
+                    R.drawable.ic_product_place_holder_24dp
+                )
             } ?: run {
-                // todo
+                productImage.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.ic_product_place_holder_24dp
+                    )
+                )
+            }
+
+            if (product.isNewProduct) {
+                newProduct.visibility = View.VISIBLE
+            } else {
+                newProduct.visibility = View.GONE
             }
 
             productName.text = product.title

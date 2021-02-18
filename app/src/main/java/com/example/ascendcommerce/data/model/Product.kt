@@ -7,4 +7,8 @@ data class Product(
     var content: String? = null,
     var isNewProduct: Boolean = false,
     var price: Double? = null
-)
+) {
+    fun isValidProduct(): Boolean {
+        return id != null && title != null
+    }
+}

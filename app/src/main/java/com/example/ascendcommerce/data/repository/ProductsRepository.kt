@@ -1,5 +1,6 @@
 package com.example.ascendcommerce.data.repository
 
+import androidx.annotation.WorkerThread
 import com.example.ascendcommerce.android.app.lifecycle.ResourceLiveData
 import com.example.ascendcommerce.data.ServiceFactory
 import com.example.ascendcommerce.data.model.Product
@@ -12,19 +13,20 @@ import retrofit2.Response
 object ProductsRepository {
     private val productAPI = ServiceFactory.create(ProductAPI::class.java)
 
-    fun getProducts(liveData: ResourceLiveData<ArrayList<Product>>) {
+    @WorkerThread
+    fun getProducts(liveData: ResourceLiveData<List<Product>>) {
         productAPI.getProducts()
             .enqueue(object :
-                Callback<ArrayList<Product>?> {
+                Callback<List<Product>?> {
 
                 override fun onResponse(
-                    call: Call<ArrayList<Product>?>,
-                    response: Response<ArrayList<Product>?>
+                    call: Call<List<Product>?>,
+                    response: Response<List<Product>?>
                 ) {
                     liveData.postResponse(response.body())
                 }
 
-                override fun onFailure(call: Call<ArrayList<Product>?>, t: Throwable) {
+                override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
                     // todo
                 }
             })
