@@ -46,7 +46,9 @@ class ProductsActivity : ToolbarActivity() {
             }
         }
 
+        setContentShown(false)
         viewModel?.getProducts()
+
         viewModel?.liveData?.observe(this, object : ServiceCallObserver<List<Product>>() {
             override fun postIsLoading(value: Boolean) {
                 if (value) {
@@ -76,8 +78,8 @@ class ProductsActivity : ToolbarActivity() {
 
     private fun setContentShown(shown: Boolean) {
         findViewById<View>(R.id.recyclerView)?.visibility = if (shown) View.VISIBLE else View.GONE
-        // TODO
-//        progressContainer?.visibility = if (shown) View.GONE else View.VISIBLE
+        findViewById<View>(R.id.progressContainer)?.visibility =
+            if (shown) View.GONE else View.VISIBLE
     }
 
     inner class ProductItemDecoration(context: Context) :
