@@ -19,6 +19,8 @@ import com.example.ascendcommerce.android.app.lifecycle.ServiceCallObserver
 import com.example.ascendcommerce.data.model.Product
 import com.example.ascendcommerce.databinding.ActivityProductsBinding
 import com.example.ascendcommerce.image.GlideUtils
+import com.google.android.material.snackbar.Snackbar
+
 
 class ProductsActivity : ToolbarActivity() {
 
@@ -68,15 +70,19 @@ class ProductsActivity : ToolbarActivity() {
                 }
             }
 
-            override fun postError(exception: Exception?) {
-                TODO("Not yet implemented")
+            override fun postError(errorMessage: String?) {
+                errorMessage?.also {
+                    Snackbar.make(binding.swipeRefresh, errorMessage, Snackbar.LENGTH_SHORT).show()
+                }
             }
-
         })
     }
 
     private fun setContentShown(shown: Boolean) {
         binding.recyclerView.visibility = if (shown) View.VISIBLE else View.GONE
+        binding.legend.visibility = if (shown) if ((productsAdapter?.itemCount
+                ?: 0) == 0
+        ) View.GONE else View.VISIBLE else View.GONE
         binding.progressContainer.visibility = if (shown) View.GONE else View.VISIBLE
     }
 

@@ -11,7 +11,7 @@ class ResourceLiveData<RESPONSE> : MutableLiveData<Resource<RESPONSE>>() {
         postValue(Resource(response))
     }
 
-    fun postError(exception: Exception?) {
-        postValue(Resource(exception))
+    fun postError(errorMessage: String?) {
+        postValue(Resource(errorMessage))
     }
 }

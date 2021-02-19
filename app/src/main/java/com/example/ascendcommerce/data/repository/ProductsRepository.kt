@@ -1,6 +1,8 @@
 package com.example.ascendcommerce.data.repository
 
+import android.content.Context
 import androidx.annotation.WorkerThread
+import com.example.ascendcommerce.R
 import com.example.ascendcommerce.android.app.lifecycle.ResourceLiveData
 import com.example.ascendcommerce.data.ServiceFactory
 import com.example.ascendcommerce.data.model.Product
@@ -14,7 +16,7 @@ object ProductsRepository {
     private val productAPI = ServiceFactory.create(ProductAPI::class.java)
 
     @WorkerThread
-    fun getProducts(liveData: ResourceLiveData<List<Product>>) {
+    fun getProducts(context: Context, liveData: ResourceLiveData<List<Product>>) {
         productAPI.getProducts()
             .enqueue(object :
                 Callback<List<Product>?> {
@@ -23,11 +25,16 @@ object ProductsRepository {
                     call: Call<List<Product>?>,
                     response: Response<List<Product>?>
                 ) {
-                    liveData.postResponse(response.body())
+                    if (response.isSuccessful) {
+                        liveData.postResponse(response.body())
+                    } else {
+                        liveData.postError(response.errorBody().toString())
+                    }
+
                 }
 
                 override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
-                    // todo
+                    liveData.postError(context.getString(R.string.message_common_error))
                 }
             })
     }

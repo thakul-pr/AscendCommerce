@@ -2,7 +2,7 @@ package com.example.ascendcommerce.android.app.lifecycle
 
 class Resource<RESPONSE> private constructor(
     val data: RESPONSE? = null,
-    val exception: Exception? = null,
+    val errorMessage: String? = null,
     val state: ResourceState = ResourceState.Idle
 ) {
 
@@ -11,8 +11,8 @@ class Resource<RESPONSE> private constructor(
         state = ResourceState.Success
     )
 
-    constructor(exception: Exception?) : this(
-        exception = exception,
+    constructor(errorMessage: String?) : this(
+        errorMessage = errorMessage,
         state = ResourceState.Error
     )
 
@@ -25,8 +25,8 @@ class Resource<RESPONSE> private constructor(
             return Resource(response)
         }
 
-        fun <RESPONSE> error(exception: Exception?): Resource<RESPONSE> {
-            return Resource(exception)
+        fun <RESPONSE> error(errorMessage: String?): Resource<RESPONSE> {
+            return Resource(errorMessage)
         }
     }
 }

@@ -9,8 +9,8 @@ object RetrofitUtils {
 
     internal fun setupRetrofit(): Retrofit {
         val okHttpClientBuilder = OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
 
         val okHttpClient = okHttpClientBuilder.build()
 

@@ -16,7 +16,7 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     fun getProducts() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                ProductsRepository.getProducts(liveData)
+                ProductsRepository.getProducts(getApplication(), liveData)
             }
         }
     }
