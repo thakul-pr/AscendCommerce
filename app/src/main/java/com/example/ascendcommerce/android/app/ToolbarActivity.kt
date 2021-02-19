@@ -1,5 +1,6 @@
 package com.example.ascendcommerce.android.app
 
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,12 @@ abstract class ToolbarActivity : AppCompatActivity() {
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)
+
+        setupToolbar()
+    }
+
+    override fun setContentView(view: View) {
+        super.setContentView(view)
 
         setupToolbar()
     }

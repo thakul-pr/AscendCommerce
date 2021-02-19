@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:padding="@dimen/space_half">
+    android:padding="@dimen/space_two_third">
 
     <ImageView
         android:id="@+id/productImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:padding="@dimen/space_one_half"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="parent"

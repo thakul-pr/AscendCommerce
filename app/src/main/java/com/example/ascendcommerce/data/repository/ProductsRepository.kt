@@ -32,4 +32,25 @@ object ProductsRepository {
             })
     }
 
+    // I'm not sure if I should use this service or not
+    // because I have received the data I want from products service.
+    @WorkerThread
+    fun getProduct(productId: Long, liveData: ResourceLiveData<Product>) {
+        productAPI.getProductDetail(productId)
+            .enqueue(object :
+                Callback<Product> {
+
+                override fun onResponse(
+                    call: Call<Product>,
+                    response: Response<Product>
+                ) {
+                    liveData.postResponse(response.body())
+                }
+
+                override fun onFailure(call: Call<Product>, t: Throwable) {
+                    // todo
+                }
+            })
+    }
+
 }
