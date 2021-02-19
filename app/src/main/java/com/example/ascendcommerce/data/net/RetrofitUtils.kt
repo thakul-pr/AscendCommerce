@@ -1,5 +1,6 @@
 package com.example.ascendcommerce.data.net
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,7 +15,7 @@ object RetrofitUtils {
 
         val okHttpClient = okHttpClientBuilder.build()
 
-        val gson = GsonUtils.build()
+        val gson = GsonBuilder().create()
 
         return Retrofit.Builder()
             .baseUrl("https://ecommerce-product-app.herokuapp.com/")
