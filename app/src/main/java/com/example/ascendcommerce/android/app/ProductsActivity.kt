@@ -44,11 +44,9 @@ class ProductsActivity : ToolbarActivity() {
         binding.recyclerView.addItemDecoration(ProductItemDecoration(this@ProductsActivity))
         binding.recyclerView.adapter = productsAdapter
 
-
         binding.swipeRefresh.setOnRefreshListener { viewModel?.getProducts() }
 
         setContentShown(false)
-        viewModel?.getProducts()
 
         viewModel?.liveData?.observe(this, object : ServiceCallObserver<List<Product>>() {
             override fun postIsLoading(value: Boolean) {
@@ -76,6 +74,11 @@ class ProductsActivity : ToolbarActivity() {
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel?.getProducts()
     }
 
     private fun setContentShown(shown: Boolean) {
